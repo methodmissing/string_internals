@@ -43,8 +43,8 @@ rb_str_assoc_p(VALUE str){
 
 static VALUE
 rb_str_obj_size(VALUE str){
-    if FL_TEST(str, STR_NOCAPA) return LONG2FIX(sizeof(struct RString) + RSTRING_LEN(str));
-    return LONG2FIX(sizeof(struct RString) + RSTRING_CAPA(str));
+    if FL_TEST(str, STR_NOCAPA) return LONG2FIX(sizeof(struct RString) + RSTRING_LEN(str) + 1);
+    return LONG2FIX(sizeof(struct RString) + RSTRING_CAPA(str) + 1);
 }
 
 void

@@ -99,18 +99,18 @@ class TestStringInternals < Test::Unit::TestCase
   end
 
   def test_obj_size
-    # object size is struct size + len || capa
+    # object size is struct size + (len || capa) + 1 for sentinel ('\0')
     # struct size (RString) is 20 bytes on 32bit and 40 bytes on 64bit platforms
     str = "string"
-    assert_equal 46, str.obj_size
+    assert_equal 47, str.obj_size
 
-    assert_equal 168, String.buffer(10).obj_size
-    assert_equal 240, String.buffer(200).obj_size
+    assert_equal 169, String.buffer(10).obj_size
+    assert_equal 241, String.buffer(200).obj_size
 
     str = "test_obj_size_str"
-    assert_equal 57, str.obj_size
+    assert_equal 58, str.obj_size
 
     str << "_much_larger"
-    assert_equal 76, str.obj_size
+    assert_equal 77, str.obj_size
   end
 end
