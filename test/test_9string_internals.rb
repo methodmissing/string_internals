@@ -1,7 +1,7 @@
 require 'test/unit'
 require 'string_internals'
 
-# XXX tests are ruby-1.8.7-p334 specific at the moment
+# XXX 1.9 specific tests
 class TestStringInternals < Test::Unit::TestCase
   def test_buffer
     # minimum 128 buffer size
