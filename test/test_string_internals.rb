@@ -59,6 +59,7 @@ class TestStringInternals < Test::Unit::TestCase
     assert_equal 1, str.size
     assert_equal 0, str.capacity
 
+    # string made independent has size == capacity
     str2 = str.succ
     assert_equal 1, str2.size
     assert_equal 1, str2.capacity
@@ -100,6 +101,12 @@ class TestStringInternals < Test::Unit::TestCase
     assert_equal nil, str6.shared
     assert_equal 54, str.obj_size
 
+    str7 = str5.replace("string")
+    assert str7.shared?
+    assert str5.shared?
+    assert_equal str5.object_id, str7.object_id
+    assert_equal str5.shared.object_id, str7.shared.object_id
+
     str << str2
     assert !str.shared?
     assert str2.shared?
@@ -115,7 +122,7 @@ class TestStringInternals < Test::Unit::TestCase
   def test_associated
     a = [ "a", "b", "c" ]
     str = a.pack("p")
-    assert_equal "pQ,\000\001\000\000\000", str
+    assert_equal "\320\233,\000\001\000\000\000", str
     assert str.associated?
   end
 
