@@ -79,6 +79,27 @@ class TestStringInternals < Test::Unit::TestCase
     str2 = "random_string"
     assert str2.shared?
 
+    # non-literal strings are not shared
+    str3 = :other_string.to_s
+    assert !str3.shared?
+
+    str4 = self.class.to_s
+    assert !str4.shared?
+
+    str5 = "str"
+    str5.concat("ing")
+    assert !str5.shared?
+
+    # shares a single char pointer
+    str6 = nil
+    500.times do
+      str6 = "looped str"
+      str6.concat("ing")
+    end
+    assert !str6.shared?
+    assert_equal nil, str6.shared
+    assert_equal 54, str.obj_size
+
     str << str2
     assert !str.shared?
     assert str2.shared?
@@ -94,7 +115,7 @@ class TestStringInternals < Test::Unit::TestCase
   def test_associated
     a = [ "a", "b", "c" ]
     str = a.pack("p")
-    assert_equal "@V,\000\001\000\000\000", str
+    assert_equal "pQ,\000\001\000\000\000", str
     assert str.associated?
   end
 
